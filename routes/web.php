@@ -22,6 +22,11 @@ Route::get('/php_dasar/soal_2', 'PhpDasarController@soal_2');
 Route::get('/php_dasar/soal_3', 'PhpDasarController@soal_3');
 Route::get('/php_dasar/soal_5', 'PhpDasarController@soal_5');
 Route::get('/php_dasar/soal_6', 'PhpDasarController@soal_6');
+Route::get('/companies', 'CompaniesController@index');
+Route::get('/employees', 'EmployeesController@index');
+Route::get('/companies/add', 'CompaniesController@add');
+Route::get('/companies/getCompanies/', 'CompaniesController@getCompanies')->name('companies.getCompanies');
+Route::get('/employees/getEmployees/', 'EmployeesController@getEmployees')->name('employees.getEmployees');
 
 Auth::routes(['except' => ['register']]);
 
