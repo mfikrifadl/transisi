@@ -30,6 +30,7 @@ Route::get('/employees/delete/{employee}', 'EmployeesController@delete');
 Route::put('/employees/edit/{employee}', 'EmployeesController@edit')->name('employees.edit');
 Route::post('/employees/add', 'EmployeesController@store')->name('employees.store');
 Route::get('/employees/getEmployees/', 'EmployeesController@getEmployees')->name('employees.getEmployees');
+Route::post('/employees/import', 'EmployeesController@import')->name('employees.import');
 
 Route::get('/companies', 'CompaniesController@index')->name('companies');
 Route::get('/companies/add', 'CompaniesController@add');
@@ -40,6 +41,7 @@ Route::put('/companies/edit/{company}', 'CompaniesController@edit')->name('compa
 Route::post('/companies/add', 'CompaniesController@store')->name('companies.store');
 Route::get('/companies/getCompanies/', 'CompaniesController@getCompanies')->name('companies.getCompanies');
 Route::get('/companies/export/{company}', 'CompaniesController@export')->name('companies.export');
+Route::post('/companies/import', 'CompaniesController@import')->name('companies.import');
 
 Auth::routes(['except' => ['register']]);
 

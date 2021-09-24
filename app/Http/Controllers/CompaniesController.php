@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\EditCompany;
+use App\Http\Requests\ImportCompany;
 use App\Http\Requests\StoreCompany;
+use App\Imports\CompaniesImport;
 use App\Models\Companies;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use PDF;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CompaniesController extends Controller
 {
@@ -160,5 +163,26 @@ class CompaniesController extends Controller
     {
         $pdf = PDF::loadview('pdf.companies-export', ['company' => $company])->setOptions(['defaultFont' => 'sans-serif']);
         return $pdf->stream('companies.pdf');
+    }
+
+    public function import(ImportCompany $request)
+    {
+        DB::beginTransaction();
+        try {
+            $file = $request->file('excel');
+            $nama_file = rand() . $file->getClientOriginalName();
+            $file->move('file_excel', $nama_file);
+            $array = (new CompaniesImport)->toArray(public_path('/file_excel/' . $nama_file));
+            if (count($array) >= 100) {
+                Excel::import(new CompaniesImport, public_path('/file_excel/' . $nama_file));
+            } else {
+                return  redirect()->back()->withErrors('Rows are under 100');
+            }
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            // something went wrong
+        }
+        return redirect()->back()->withSuccess('Success Import Companies');
     }
 }

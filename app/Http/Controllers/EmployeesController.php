@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\EditEmployee;
+use App\Http\Requests\ImportEmployee;
 use App\Http\Requests\StoreEmployee;
+use App\Imports\EmployeesImport;
 use App\Models\Employees;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class EmployeesController extends Controller
 {
@@ -111,5 +115,26 @@ class EmployeesController extends Controller
     {
         $employee->delete();
         return redirect()->back()->withSuccess('Success Delete ' . $employee->name);
+    }
+
+    public function import(ImportEmployee $request)
+    {
+        DB::beginTransaction();
+        try {
+            $file = $request->file('excel');
+            $nama_file = rand() . $file->getClientOriginalName();
+            $file->move('file_excel', $nama_file);
+            $array = (new EmployeesImport)->toArray(public_path('/file_excel/' . $nama_file));
+            // if (count($array) >= 100) {
+            Excel::import(new EmployeesImport, public_path('/file_excel/' . $nama_file));
+            // } else {
+            //     return  redirect()->back()->withErrors('Rows are under 100');
+            // }
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            // something went wrong
+        }
+        return redirect()->back()->withSuccess('Success Import Companies');
     }
 }
