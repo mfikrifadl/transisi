@@ -6,8 +6,10 @@ use App\Http\Requests\EditCompany;
 use App\Http\Requests\StoreCompany;
 use App\Models\Companies;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use PDF;
 
 class CompaniesController extends Controller
 {
@@ -68,7 +70,7 @@ class CompaniesController extends Controller
                 "name" => $name,
                 "email" => $email,
                 "website" => $website,
-                "action" => '<a type="button" href="/companies/edit/' . $id . '" class="btn btn-warning">Edit</a><a type="button" href="/companies/delete/' . $id . '" class="btn btn-danger ml-2">Delete</a>',
+                "action" => '<a type="button" href="/companies/edit/' . $id . '" class="btn btn-warning">Edit</a><a type="button" href="/companies/delete/' . $id . '" class="btn btn-danger ml-2">Delete</a><a type="button" href="/companies/export/' . $id . '" class="btn btn-success ml-2">Export Employee</a>',
             );
         }
 
@@ -152,5 +154,11 @@ class CompaniesController extends Controller
             'pagination' => array('more' => true)
         );
         echo json_encode($array);
+    }
+
+    public function export(Companies $company)
+    {
+        $pdf = PDF::loadview('pdf.companies-export', ['company' => $company])->setOptions(['defaultFont' => 'sans-serif']);
+        return $pdf->stream('companies.pdf');
     }
 }

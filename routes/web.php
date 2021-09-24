@@ -39,6 +39,7 @@ Route::get('/companies/delete/{company}', 'CompaniesController@delete');
 Route::put('/companies/edit/{company}', 'CompaniesController@edit')->name('companies.edit');
 Route::post('/companies/add', 'CompaniesController@store')->name('companies.store');
 Route::get('/companies/getCompanies/', 'CompaniesController@getCompanies')->name('companies.getCompanies');
+Route::get('/companies/export/{company}', 'CompaniesController@export')->name('companies.export');
 
 Auth::routes(['except' => ['register']]);
 

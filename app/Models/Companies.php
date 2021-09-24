@@ -16,6 +16,6 @@ class Companies extends Model
 
     public function employees()
     {
-        return $this->hasMany('App\Models\Employees', 'company_d', 'id');
+        return $this->hasMany('App\Models\Employees', 'company_id', 'id');
     }
 }
