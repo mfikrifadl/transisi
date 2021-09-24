@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EditEmployee;
+use App\Http\Requests\StoreEmployee;
 use App\Models\Employees;
 use Illuminate\Http\Request;
 
@@ -64,7 +66,7 @@ class EmployeesController extends Controller
                 "name" => $name,
                 "email" => $email,
                 "company" => $company,
-                "action" => '<button type="button" class="btn btn-primary">Detail</button>',
+                "action" => '<a type="button" href="/employees/edit/' . $id . '" class="btn btn-warning">Edit</a><a type="button" href="/employees/delete/' . $id . '" class="btn btn-danger ml-2">Delete</a>',
             );
         }
 
@@ -77,5 +79,37 @@ class EmployeesController extends Controller
 
         echo json_encode($response);
         exit;
+    }
+
+    public function store(StoreEmployee $request)
+    {
+        Employees::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'company_id' => $request->company_id,
+        ]);
+        return redirect()->route('employees');
+    }
+
+    public function show(Employees $employee)
+    {
+        $data['employee'] = $employee;
+        return view('employees-form-edit')->with($data);
+    }
+
+    public function edit(EditEmployee $request, Employees $employee)
+    {
+        $employee->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'company_id' => $request->company_id,
+        ]);
+        return redirect()->route('employees');
+    }
+
+    public function delete(Employees $employee)
+    {
+        $employee->delete();
+        return redirect()->back()->withSuccess('Success Delete ' . $employee->name);
     }
 }

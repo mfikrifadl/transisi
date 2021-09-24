@@ -135,4 +135,22 @@ class CompaniesController extends Controller
         $company->delete();
         return redirect()->back()->withSuccess("Success Delete Company " . $company->name);
     }
+
+    function search_company($search)
+    {
+        $search = str_replace('%20', ' ', $search);
+        $data = Companies::where('name', 'like', '%' . $search . '%')->get();
+        $dat = array();
+        foreach ($data as $index => $value) {
+            $dat[$index] = array();
+            $dat[$index]['id'] = $value["id"];
+            $dat[$index]['text'] = $value["name"];
+            //echo json_encode($dat[$index]);
+        }
+        $array = array(
+            'results' => $dat,
+            'pagination' => array('more' => true)
+        );
+        echo json_encode($array);
+    }
 }
