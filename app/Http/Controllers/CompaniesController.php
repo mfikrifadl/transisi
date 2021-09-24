@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EditCompany;
+use App\Http\Requests\StoreCompany;
 use App\Models\Companies;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class CompaniesController extends Controller
 {
@@ -64,7 +68,7 @@ class CompaniesController extends Controller
                 "name" => $name,
                 "email" => $email,
                 "website" => $website,
-                "action" => '<button type="button" class="btn btn-primary">Detail</button>',
+                "action" => '<a type="button" href="/companies/edit/' . $id . '" class="btn btn-warning">Edit</a><a type="button" href="/companies/delete/' . $id . '" class="btn btn-danger ml-2">Delete</a>',
             );
         }
 
@@ -77,5 +81,58 @@ class CompaniesController extends Controller
 
         echo json_encode($response);
         exit;
+    }
+
+    public function store(StoreCompany $request)
+    {
+        DB::beginTransaction();
+        try {
+            $logo = Storage::putFile('public/company', $request->file('logo'));
+            Companies::insert([
+                'name' => $request->name,
+                'email' => $request->email,
+                'logo' => $logo,
+                'website' => $request->website,
+            ]);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            // something went wrong
+        }
+        return redirect()->route('companies');
+    }
+
+    public function show(Companies $company)
+    {
+        $data['company'] = $company;
+        $data['company']['path'] = Storage::url(str_replace('public/', '', $company->logo));
+        return view('companies-form-edit')->with($data);
+    }
+
+    public function edit(EditCompany $request, Companies $company)
+    {
+        DB::beginTransaction();
+        try {
+            if (isset($request->logo)) {
+                $logo = Storage::putFile('public/company', $request->file('logo'));
+                $company->update(['logo' => $logo]);
+            }
+            $company->update([
+                'name' => $request->name,
+                'email' => $request->email,
+                'website' => $request->website,
+            ]);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            // something went wrong
+        }
+        return redirect()->route('companies');
+    }
+
+    public function delete(Companies $company)
+    {
+        $company->delete();
+        return redirect()->back()->withSuccess("Success Delete Company " . $company->name);
     }
 }

@@ -2,6 +2,13 @@
 
 @section('content')
 <div class="container">
+    @if (session('success'))
+    <div class="alert alert-success">
+        <ul>
+            <li>{{ session('success') }}</li>
+        </ul>
+    </div>
+    @endif
     <a type="button" href="/companies/add" class="btn btn-primary mb-3">Add Company</a>
     <table id='compTable' class="table" width='100%' border="1" style='border-collapse: collapse;'>
         <thead>
