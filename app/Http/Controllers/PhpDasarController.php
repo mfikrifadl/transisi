@@ -6,9 +6,13 @@ use Illuminate\Http\Request;
 
 class PhpDasarController extends Controller
 {
-    public function soal_1()
+    public function soal_1_view()
     {
-        $nilai = '72 65 73 78 75 74 90 81 87 65 55 69 72 78 79 91 100 40 67 77 86';
+        return view('php_dasar.soal_1');
+    }
+    public function soal_1(Request $request)
+    {
+        $nilai = $request->nilai;
         $nilais = explode(" ", $nilai);
         $average = array_sum($nilais) / count($nilais);
         sort($nilais);
@@ -21,26 +25,38 @@ class PhpDasarController extends Controller
             $tertinggi .= $tertinggiArr[$i] . ' ';
             $terendah .= $terendahArr[$i] . ' ';
         }
-        echo 'Nilai Rata rata : ' . $average;
-        echo '<Br>';
-        echo 'Nilai Terendah : ' . $terendah;
-        echo '<Br>';
-        echo 'Nilai Tertinggi : ' . $tertinggi;
+        $data['average'] = $average;
+        $data['input'] = $nilai;
+        $data['terendah'] = $terendah;
+        $data['tertinggi'] = $tertinggi;
+        return redirect()->back()->with($data);
     }
 
-    public function soal_2()
+    public function soal_2_view()
     {
-        $string = 'TranSISI';
+        return view('php_dasar.soal_2');
+    }
+    public function soal_2(Request $request)
+    {
+        $string = $request->string;
         $lower = 0;
         for ($i = 0; $i < strlen($string); $i++) {
             if ($string[$i] >= 'a' && $string[$i] <= 'z') $lower++;
         }
-        echo '"' . $string . '" mengandung ' . $lower . ' buah huruf kecil';
+        $data = ([
+            'string' => $string,
+            'lower' => $lower,
+        ]);
+        return redirect()->back()->with($data);
     }
 
-    public function soal_3()
+    public function soal_3_view()
     {
-        $string = 'Jakarta adalah ibukota negara Republik Indonesia';
+        return view('php_dasar.soal_3');
+    }
+    public function soal_3(Request $request)
+    {
+        $string = $request->string;
         $unigram = '';
         $bigram = '';
         $trigram = '';
@@ -70,16 +86,22 @@ class PhpDasarController extends Controller
                 }
             }
         }
-        echo 'Unigram : ' . '"' . $unigram . '"';
-        echo '<Br>';
-        echo 'Bigram : ' . '"' . $bigram . '"';
-        echo '<Br>';
-        echo 'Trigram : ' . '"' . $trigram . '"';
+        $data = ([
+            'input' => $request->string,
+            'unigram' => $unigram,
+            'bigram' => $bigram,
+            'trigram' => $trigram,
+        ]);
+        return redirect()->back()->with($data);
     }
 
-    public function soal_5()
+    public function soal_5_view()
     {
-        $string = 'DFHKNQ';
+        return view('php_dasar.soal_5');
+    }
+    public function soal_5(Request $request)
+    {
+        $string = $request->string;
         $string = strtoupper($string);
         $plus = true;
         $enkripsi = '';
@@ -95,20 +117,24 @@ class PhpDasarController extends Controller
             $y++;
             $enkripsi .= $next_character;
         }
-        echo $enkripsi;
+        return redirect()->back()->with(['message' => 'Enkripsi dari ' . $request->string . ' adalah ' . $enkripsi]);
     }
 
-    public function soal_6()
+    public function soal_6_view()
+    {
+        return view('php_dasar.soal_6');
+    }
+    public function soal_6(Request $request)
     {
         $arr = [
             ['f', 'g', 'h', 'i'],
             ['j', 'k', 'p', 'q'],
             ['r', 's', 't', 'u']
         ];
-        $string = 'fghq';
+        $string = $request->string;
         $string = strtolower($string);
         $cari = $this->cari($arr, $string);
-        echo $string . ' // ' . $cari;
+        return redirect()->back()->with(['message' => $string . ' // ' . $cari]);
     }
 
     public function cari($arrays, $string)

@@ -48,6 +48,19 @@
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="/employees">Employees</a>
                         </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Soal PHP Dasar
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="/php_dasar/soal_1">Soal 1</a></li>
+                                <li><a class="dropdown-item" href="/php_dasar/soal_2">Soal 2</a></li>
+                                <li><a class="dropdown-item" href="/php_dasar/soal_3">Soal 3</a></li>
+                                <!-- <li><a class="dropdown-item" href="/php_dasar/soal_4">Soal 4</a></li> -->
+                                <li><a class="dropdown-item" href="/php_dasar/soal_5">Soal 5</a></li>
+                                <li><a class="dropdown-item" href="/php_dasar/soal_6">Soal 6</a></li>
+                            </ul>
+                        </li>
                     </ul>
                     <li class="nav-item dropdown d-flex">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>

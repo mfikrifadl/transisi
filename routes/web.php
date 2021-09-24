@@ -14,14 +14,19 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
-Route::get('/php_dasar/soal_1', 'PhpDasarController@soal_1');
-Route::get('/php_dasar/soal_2', 'PhpDasarController@soal_2');
-Route::get('/php_dasar/soal_3', 'PhpDasarController@soal_3');
-Route::get('/php_dasar/soal_5', 'PhpDasarController@soal_5');
-Route::get('/php_dasar/soal_6', 'PhpDasarController@soal_6');
+Route::get('/php_dasar/soal_1', 'PhpDasarController@soal_1_view');
+Route::post('/php_dasar/soal_1', 'PhpDasarController@soal_1')->name('soal.1');
+Route::get('/php_dasar/soal_2', 'PhpDasarController@soal_2_view');
+Route::post('/php_dasar/soal_2', 'PhpDasarController@soal_2')->name('soal.2');
+Route::get('/php_dasar/soal_3', 'PhpDasarController@soal_3_view');
+Route::post('/php_dasar/soal_3', 'PhpDasarController@soal_3')->name('soal.3');
+Route::get('/php_dasar/soal_5', 'PhpDasarController@soal_5_view');
+Route::post('/php_dasar/soal_5', 'PhpDasarController@soal_5')->name('soal.5');
+Route::get('/php_dasar/soal_6', 'PhpDasarController@soal_6_view');
+Route::post('/php_dasar/soal_6', 'PhpDasarController@soal_6')->name('soal.6');
 
 Route::get('/employees', 'EmployeesController@index')->name('employees');
 Route::get('/employees/add', 'EmployeesController@add');
