@@ -1,0 +1,6 @@
+1. composer install --ignore-platform-reqs
+2. npm install
+3. npm run dev
+4. Copy File .env
+5. php artisan key:generate
+5. php artisan serve
